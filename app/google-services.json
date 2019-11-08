@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "386620129446",
+    "firebase_url": "https://enti-arnauallo.firebaseio.com",
+    "project_id": "enti-arnauallo",
+    "storage_bucket": "enti-arnauallo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386620129446:android:d0bc2320b48b8ff450b467",
+        "android_client_info": {
+          "package_name": "com.example.gamecompanion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386620129446-t7u2192aup9s5cdv84nh59e1orehnomu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm0bYS7rdg4B6teOMuzB1U1IJ1Q0D3y00"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386620129446-t7u2192aup9s5cdv84nh59e1orehnomu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
