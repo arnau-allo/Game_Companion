@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 
@@ -31,7 +32,27 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //initUI()
+    }
 
+    private fun initUI(){
+        if(FirebaseAuth.getInstance().currentUser ==null){
+            logoutButton.visibility = View.GONE
+            registerButton.visibility = View.VISIBLE
+            registerButton.setOnClickListener {
+                startActivity(Intent(requireContext(), RegisterActivity::class.java))
+            }
+        }
+        else{
+            registerButton.visibility = View.GONE
+            logoutButton.visibility = View.VISIBLE
+
+            logoutButton.setOnClickListener {
+                FirebaseAuth.getInstance().signOut()
+                initUI()
+            }
+
+        }
         registerButton.setOnClickListener {
             //TODO: Go to register
             startActivity(Intent(requireContext(), RegisterActivity::class.java))

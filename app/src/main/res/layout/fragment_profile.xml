@@ -6,16 +6,20 @@
              tools:context=".ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment"/>
+
 
     <Button
         android:id = "@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_medium_height"
         android:text="@string/profile_register_button"
+    />
+
+    <Button
+    android:id = "@+id/logoutButton"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_medium_height"
+    android:text="@string/profile_logout_button"
     />
 
 </FrameLayout>

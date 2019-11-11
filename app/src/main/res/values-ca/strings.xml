@@ -7,6 +7,7 @@
     <string name="tab_news">Notícies</string>
     <string name="profile_register_button">Registrar-se</string>
 
+    <string name="profile_logout_button">Sortir</string>
 
 
 </resources>
