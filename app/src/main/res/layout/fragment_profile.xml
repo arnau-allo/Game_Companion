@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".ProfileFragment">
+              android:orientation="vertical"
+             tools:context=".fragment.ProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -16,10 +17,15 @@
     />
 
     <Button
-    android:id = "@+id/logoutButton"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/item_medium_height"
-    android:text="@string/profile_logout_button"
+        android:id = "@+id/logoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_medium_height"
+        android:text="@string/profile_logout_button"
     />
+    
+    <TextView
+            android:id="@+id/usernameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-</FrameLayout>
+</LinearLayout>

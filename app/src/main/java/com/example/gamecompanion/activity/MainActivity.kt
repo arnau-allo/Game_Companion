@@ -1,7 +1,8 @@
-package com.example.gamecompanion
+package com.example.gamecompanion.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.gamecompanion.R
 import com.example.gamecompanion.fragment.ProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                 fragmentTransaction.add(fragmentContainer.id, profileFragment)
                 fragmentTransaction.commit()
             }
-            R.id.home->{
+            R.id.home ->{
 
             }
 

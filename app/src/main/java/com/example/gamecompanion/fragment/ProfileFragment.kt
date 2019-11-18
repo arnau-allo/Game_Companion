@@ -1,13 +1,22 @@
-package com.example.gamecompanion
+package com.example.gamecompanion.fragment
 
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.example.gamecompanion.R
+import com.example.gamecompanion.activity.RegisterActivity
+import com.example.gamecompanion.models.UserModel
+import com.example.gamecompanion.utils.COLECTION_USERS
+import com.example.gamecompanion.utils.SharedPreferencesManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 
@@ -35,6 +44,11 @@ class ProfileFragment : Fragment() {
         //initUI()
     }
 
+    override fun onResume(){
+        super.onResume()
+        initUI()
+    }
+
     private fun initUI(){
         if(FirebaseAuth.getInstance().currentUser ==null){
             logoutButton.visibility = View.GONE
@@ -51,13 +65,35 @@ class ProfileFragment : Fragment() {
                 FirebaseAuth.getInstance().signOut()
                 initUI()
             }
+            showUser()
+        }
 
-        }
-        registerButton.setOnClickListener {
-            //TODO: Go to register
-            startActivity(Intent(requireContext(), RegisterActivity::class.java))
-        }
         //else: show profile
     }
+    private fun showUser(){
 
+        SharedPreferencesManager().getUsername(requireContext())
+            ?.let { username ->
+            }
+            ?:run{
+
+            }
+
+        val username = SharedPreferencesManager().getUsername(requireContext())
+
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?:""
+
+        FirebaseFirestore.getInstance()
+            .collection(COLECTION_USERS)
+            .document(userId)
+            .get()
+            .addOnSuccessListener {documentSnapshot ->
+                val userProfile = documentSnapshot.toObject(UserModel::class.java)
+                usernameTextView.text=userProfile?.username
+                SharedPreferencesManager().setUsername(requireContext(),userProfile?.username)
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(),it.localizedMessage,Toast.LENGTH_LONG).show()
+            }
+    }
 }

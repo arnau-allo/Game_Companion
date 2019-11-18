@@ -1,10 +1,12 @@
-package com.example.gamecompanion
+package com.example.gamecompanion.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
+import com.example.gamecompanion.R
 import com.example.gamecompanion.models.UserModel
+import com.example.gamecompanion.utils.COLECTION_USERS
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_register.*
@@ -44,7 +46,7 @@ class RegisterActivity : AppCompatActivity() {
                             email = email
                         )
                     FirebaseFirestore.getInstance()
-                        .collection("users")
+                        .collection(COLECTION_USERS)
                         .document(authResult.user?.uid ?:"")
                         .set(userModel)
                         .addOnSuccessListener {
