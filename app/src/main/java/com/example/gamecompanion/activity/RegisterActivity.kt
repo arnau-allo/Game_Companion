@@ -1,11 +1,12 @@
 package com.example.gamecompanion
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
+import com.example.gamecompanion.models.UserModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -37,12 +38,25 @@ class RegisterActivity : AppCompatActivity() {
 
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
                 .addOnSuccessListener { authResult ->
-                    Toast.makeText(this,"Success creating new user",Toast.LENGTH_LONG).show()
+                        val userModel = UserModel(
+                            id = authResult.user?.uid ?: "",
+                            username = username,
+                            email = email
+                        )
+                    FirebaseFirestore.getInstance()
+                        .collection("users")
+                        .document(authResult.user?.uid ?:"")
+                        .set(userModel)
+                        .addOnSuccessListener {
+                            Toast.makeText(this,"Success creating new user",Toast.LENGTH_LONG).show()
+                            finish()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this,it.localizedMessage,Toast.LENGTH_LONG).show()
+                        }
                     finish()
                 }
-                .addOnFailureListener {
-                    Toast.makeText(this,it.localizedMessage,Toast.LENGTH_LONG).show()
-                }
+
         }
     }
 }
