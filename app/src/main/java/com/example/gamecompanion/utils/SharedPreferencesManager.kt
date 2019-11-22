@@ -6,7 +6,7 @@ class SharedPreferencesManager {
 
     val userPreferencesFileName = "userPreferences"
     val usernameKey="username"
-    val context: Context? = null;
+    //val context: Context? = null;
 
     fun getUsername(context: Context):String?{
         val sharedPreferences = context.getSharedPreferences(userPreferencesFileName, Context.MODE_PRIVATE)
@@ -18,7 +18,7 @@ class SharedPreferencesManager {
         sharedPreferences.edit().putString(usernameKey,username).apply()
     }
 
-    fun clear(){
+    fun clear(context: Context){
         val sharedPreferences = context.getSharedPreferences(userPreferencesFileName, Context.MODE_PRIVATE)
         sharedPreferences.edit().clear().apply()
     }
