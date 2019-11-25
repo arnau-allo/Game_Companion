@@ -4,7 +4,11 @@ package com.example.gamecompanion.fragment
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +21,10 @@ import com.example.gamecompanion.utils.COLECTION_USERS
 import com.example.gamecompanion.utils.SharedPreferencesManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.fragment_profile.*
+import java.io.ByteArrayOutputStream
+import java.io.File
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -66,6 +73,9 @@ class ProfileFragment : Fragment() {
                 initUI()
             }
             showUser()
+            takePicture.setOnClickListener {
+                takePicture()
+            }
         }
 
         //else: show profile
@@ -95,5 +105,60 @@ class ProfileFragment : Fragment() {
             .addOnFailureListener {
                 Toast.makeText(requireContext(),it.localizedMessage,Toast.LENGTH_LONG).show()
             }
+    }
+
+    private fun takePicture(){
+        val imageIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        imageIntent.resolveActivity(requireActivity().packageManager)
+        startActivityForResult(imageIntent,1)
+
+    }
+
+    private fun createImageFile(){
+        val file = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.toString() + "/" + "avatarImage.jpeg")
+    }
+
+    private fun saveImageToCloud(bitmap: Bitmap){
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val imageBytes = baos.toByteArray()
+        val storageReference = FirebaseStorage.getInstance().reference
+        val avatarsFoldersReference = storageReference.child("public/avatars/")
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        val timestamp = System.currentTimeMillis()
+        val avatarImageReference = avatarsFoldersReference.child("avatar_${userId}_${timestamp}.jpeg")
+
+        avatarImageReference.putBytes(imageBytes)
+            .addOnSuccessListener {
+                avatarImageReference.downloadUrl
+                    .addOnSuccessListener {url->
+                    Log.i("ProfileFragment", "Success uploading image $url")
+                        FirebaseFirestore.getInstance()
+                            .collection(COLECTION_USERS)
+                            .document(userId)
+                            .update("avatarUrl",url.toString())
+                            .addOnSuccessListener {
+
+                            }
+                            .addOnFailureListener{
+
+                            }
+                    }
+            }
+            .addOnFailureListener {
+                Log.w("ProfileFragment", "Error uploading image")
+            }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 1){
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            imageBitmap?.let {
+                avatar.setImageBitmap(it)
+                saveImageToCloud(it)
+            }
+        }
     }
 }

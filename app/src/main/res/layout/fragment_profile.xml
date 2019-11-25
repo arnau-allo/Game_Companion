@@ -28,4 +28,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+    <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/item_medium_height"
+            android:layout_height="@dimen/item_medium_height"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_profile"
+    />
+
+    <Button
+            android:id="@+id/takePicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Take Picture"/>
+
 </LinearLayout>
